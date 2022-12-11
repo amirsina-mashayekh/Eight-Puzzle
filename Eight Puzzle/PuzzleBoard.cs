@@ -1,83 +1,55 @@
-﻿using System.Collections;
-using System.Text;
+﻿using System.Text;
 
 namespace Eight_Puzzle
 {
     internal class PuzzleBoard : IEquatable<PuzzleBoard>
     {
-        private int[] _board;
+        private readonly int[] _board;
 
-        private int hash;
+        private readonly int hash;
 
-        public int[] BoardArray
-        {
-            get => _board;
-            private set
-            {
-                _board = value;
+        private readonly int _emptyTile;
 
-                int power = 8;
-                hash = 0;
+        public int[] BoardArray => (int[])_board.Clone();
 
-                for (int i = 0; i < 8; i++)
-                {
-                    if (i == emptyTile - 1)
-                        power--;
-
-                    hash += _board[i] * (int)Math.Pow(10, power);
-                    power--;
-                }
-            }
-        }
-
-        private readonly int emptyTile;
-
-        public int?[,] Board2d
+        public int[,] Board2d
         {
             get
             {
-                var brd = new int?[3, 3];
-                int counter = 0;
+                var brd = new int[3, 3];
 
                 for (int i = 0; i < 3; i++)
-                {
                     for (int j = 0; j < 3; j++)
-                    {
-                        int pos = i * 3 + j;
-
-                        if (pos == emptyTile - 1)
-                            continue;
-
-                        brd[i, j] = _board[counter];
-
-                        counter++;
-                    }
-                }
+                        brd[i, j] = _board[i * 3 + j];
 
                 return brd;
             }
         }
 
-        public PuzzleBoard(int[] board, int emptyTile)
-        {
-            if (board.Length != 8)
-                throw new ArgumentException("Board must have exactly 8 members.", nameof(board));
+        public int EmptyTile => _emptyTile;
 
-            for (int i = 1; i <= 8; i++)
+        public PuzzleBoard(int[] board)
+        {
+            if (board.Length != 9)
+                throw new ArgumentException("Board must have exactly 9 members.", nameof(board));
+
+            for (int i = 0; i <= 8; i++)
             {
                 if (!board.Contains(i))
-                    throw new ArgumentException($"Board must have all numbers from 1 to 8. (missing: {i})", nameof(board));
+                    throw new ArgumentException($"Board must have all numbers from 0 to 8. (missing: {i})", nameof(board));
             }
-
-            if (emptyTile < 1 || emptyTile > 9)
-                throw new ArgumentException("Empty position must be in board range", nameof(emptyTile));
 
             _board = board;
             hash = 0;
-            this.emptyTile = emptyTile;
-            BoardArray = board;
+
+            for (int i = 0; i < 8; i++)
+            {
+                hash += _board[i] * (int)Math.Pow(10, 7 - i);
+                if (_board[i] == 0)
+                    _emptyTile = i;
+            }
         }
-        
+
         public override bool Equals(object? obj)
         {
             return Equals(obj as PuzzleBoard);
@@ -101,7 +73,8 @@ namespace Eight_Puzzle
             {
                 for (int j = 0; j < 3; j++)
                 {
-                    str.Append(table[i, j] ?? 0);
+                    int tile = table[i, j];
+                    str.Append(tile == 0 ? " " : tile.ToString());
                     if (j < 2)
                         str.Append(' ');
                 }
@@ -109,40 +82,55 @@ namespace Eight_Puzzle
                     str.Append(Environment.NewLine);
             }
 
-            str.Replace('0', ' ');
             return str.ToString();
         }
 
         public PuzzleBoard MoveEmptyUp()
         {
-            if (emptyTile < 4)
+            if (_emptyTile < 3)
                 throw new InvalidOperationException("Empty space is in topmost row.");
 
-            return new PuzzleBoard(_board, emptyTile - 3);
+            var brd = BoardArray;
+            brd[_emptyTile] = _board[_emptyTile - 3];
+            brd[_emptyTile - 3] = 0;
+
+            return new PuzzleBoard(brd);
         }
 
         public PuzzleBoard MoveEmptyRight()
         {
-            if (emptyTile % 3 == 0)
+            if (_emptyTile % 3 == 2)
                 throw new InvalidOperationException("Empty space is in rightmost row.");
 
-            return new PuzzleBoard(_board, emptyTile + 1);
+            var brd = BoardArray;
+            brd[_emptyTile] = _board[_emptyTile + 1];
+            brd[_emptyTile + 1] = 0;
+
+            return new PuzzleBoard(brd);
         }
 
         public PuzzleBoard MoveEmptyDown()
         {
-            if (emptyTile > 6)
+            if (_emptyTile > 5)
                 throw new InvalidOperationException("Empty space is in downmost row.");
 
-            return new PuzzleBoard(_board, emptyTile + 3);
+            var brd = BoardArray;
+            brd[_emptyTile] = _board[_emptyTile + 3];
+            brd[_emptyTile + 3] = 0;
+
+            return new PuzzleBoard(brd);
         }
 
         public PuzzleBoard MoveEmptyLeft()
         {
-            if (emptyTile % 3 == 1)
+            if (_emptyTile % 3 == 0)
                 throw new InvalidOperationException("Empty space is in leftmost row.");
 
-            return new PuzzleBoard(_board, emptyTile - 1);
+            var brd = BoardArray;
+            brd[_emptyTile] = _board[_emptyTile - 1];
+            brd[_emptyTile - 1] = 0;
+
+            return new PuzzleBoard(brd);
         }
     }
 }

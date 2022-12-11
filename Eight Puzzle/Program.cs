@@ -1,8 +1,13 @@
 ﻿using Eight_Puzzle;
 
-var pb = new PuzzleBoard(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }, 5);
+var pb = new PuzzleBoard(new int[]
+    {
+        1, 2, 3,
+        4, 0, 6,
+        5, 7, 8
+    });
 
-pb = pb.MoveEmptyDown();
+pb = pb.MoveEmptyUp();
 
 Console.WriteLine(pb.ToTableString());
 
