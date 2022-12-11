@@ -1,8 +1,9 @@
 ﻿using System.Collections;
+using System.Text;
 
 namespace Eight_Puzzle
 {
-    internal struct PuzzleBoard : IEquatable<PuzzleBoard>
+    internal class PuzzleBoard : IEquatable<PuzzleBoard>
     {
         private int[] _board;
 
@@ -76,17 +77,72 @@ namespace Eight_Puzzle
             this.emptyTile = emptyTile;
             BoardArray = board;
         }
-
+        
         public override bool Equals(object? obj)
         {
-            return obj is PuzzleBoard board && Equals(board);
+            return Equals(obj as PuzzleBoard);
         }
 
-        public bool Equals(PuzzleBoard other)
+        public bool Equals(PuzzleBoard? other)
         {
-            return hash == other.hash;
+            return other is not null && other.hash == hash;
         }
 
         public override int GetHashCode() => hash;
+
+        public override string ToString() => hash.ToString();
+
+        public string ToTableString()
+        {
+            var str = new StringBuilder();
+            var table = Board2d;
+
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    str.Append(table[i, j] ?? 0);
+                    if (j < 2)
+                        str.Append(' ');
+                }
+                if (i < 2)
+                    str.Append(Environment.NewLine);
+            }
+
+            str.Replace('0', ' ');
+            return str.ToString();
+        }
+
+        public PuzzleBoard MoveEmptyUp()
+        {
+            if (emptyTile < 4)
+                throw new InvalidOperationException("Empty space is in topmost row.");
+
+            return new PuzzleBoard(_board, emptyTile - 3);
+        }
+
+        public PuzzleBoard MoveEmptyRight()
+        {
+            if (emptyTile % 3 == 0)
+                throw new InvalidOperationException("Empty space is in rightmost row.");
+
+            return new PuzzleBoard(_board, emptyTile + 1);
+        }
+
+        public PuzzleBoard MoveEmptyDown()
+        {
+            if (emptyTile > 6)
+                throw new InvalidOperationException("Empty space is in downmost row.");
+
+            return new PuzzleBoard(_board, emptyTile + 3);
+        }
+
+        public PuzzleBoard MoveEmptyLeft()
+        {
+            if (emptyTile % 3 == 1)
+                throw new InvalidOperationException("Empty space is in leftmost row.");
+
+            return new PuzzleBoard(_board, emptyTile - 1);
+        }
     }
 }
