@@ -1,6 +1,6 @@
 ﻿using Eight_Puzzle;
 
-var pb = new PuzzleBoard(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }, 1);
+var pb = new PuzzleBoard(new int[] { 1, 2, 3, 4, 5, 6, 7, 8 }, 2);
 
 for (int i = 0; i < pb.Board2d.GetLength(0); i++)
 {
@@ -10,3 +10,5 @@ for (int i = 0; i < pb.Board2d.GetLength(0); i++)
 	}
 	Console.WriteLine();
 }
+
+Console.WriteLine(pb.GetHashCode());

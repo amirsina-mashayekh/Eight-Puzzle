@@ -1,16 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections;
 
 namespace Eight_Puzzle
 {
-    internal struct PuzzleBoard
+    internal struct PuzzleBoard : IEquatable<PuzzleBoard>
     {
-        private readonly int[] board;
+        private int[] _board;
 
-        private int emptyTile;
+        private int hash;
+
+        public int[] BoardArray
+        {
+            get => _board;
+            private set
+            {
+                _board = value;
+
+                int power = 8;
+                hash = 0;
+
+                for (int i = 0; i < 8; i++)
+                {
+                    if (i == emptyTile - 1)
+                        power--;
+
+                    hash += _board[i] * (int)Math.Pow(10, power);
+                    power--;
+                }
+            }
+        }
+
+        private readonly int emptyTile;
 
         public int?[,] Board2d
         {
@@ -28,7 +47,7 @@ namespace Eight_Puzzle
                         if (pos == emptyTile - 1)
                             continue;
 
-                        brd[i, j] = board[counter];
+                        brd[i, j] = _board[counter];
 
                         counter++;
                     }
@@ -52,8 +71,22 @@ namespace Eight_Puzzle
             if (emptyTile < 1 || emptyTile > 9)
                 throw new ArgumentException("Empty position must be in board range", nameof(emptyTile));
 
-            this.board = board;
+            _board = board;
+            hash = 0;
             this.emptyTile = emptyTile;
+            BoardArray = board;
         }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is PuzzleBoard board && Equals(board);
+        }
+
+        public bool Equals(PuzzleBoard other)
+        {
+            return hash == other.hash;
+        }
+
+        public override int GetHashCode() => hash;
     }
 }
