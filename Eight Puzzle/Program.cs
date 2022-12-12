@@ -9,9 +9,9 @@ var goal = new PuzzleBoard(new int[]
 
 var pb = new PuzzleBoard(new int[]
     {
-        3,1,6,
-        2,7,5,
-        4,8,0,
+        4,1,6,
+        8,0,7,
+        2,5,3,
     });
 
 AStarMisplacedTiles problem = new(pb, goal);

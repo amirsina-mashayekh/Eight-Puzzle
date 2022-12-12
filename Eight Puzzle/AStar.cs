@@ -10,6 +10,7 @@
         {
             SolutionNode? currentNode = new(initialState, null, 0);
             PriorityQueue<SolutionNode, int> queue = new();
+            HashSet<PuzzleBoard> visited = new();
             int totalNodes = 0;
 
             while (!currentNode.State.Equals(goalState))
@@ -18,13 +19,17 @@
 
                 foreach (var state in nextStates)
                 {
-                    int f = currentNode.PathCost + Heuristic(state);
                     SolutionNode nextNode = new(state, currentNode, currentNode.PathCost + 1);
-                    queue.Enqueue(nextNode, f);
-                    totalNodes++;
+                    if (visited.Add(state))
+                    {
+                        int f = currentNode.PathCost + Heuristic(state);
+                        queue.Enqueue(nextNode, f);
+                        totalNodes++;
+                    }
                 }
 
-                currentNode = queue.Dequeue();
+                if (!queue.TryDequeue(out currentNode, out _))
+                    return (new List<SolutionNode>(), 0);
             }
 
             List<SolutionNode> solution = new();
