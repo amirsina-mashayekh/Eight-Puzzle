@@ -1,14 +1,14 @@
 ﻿namespace Eight_Puzzle
 {
-    internal class ProblemNode
+    internal class SolutionNode
     {
         public PuzzleBoard State { get; }
 
-        public ProblemNode? Parent { get; }
+        public SolutionNode? Parent { get; }
 
         public int PathCost { get; }
 
-        public ProblemNode(PuzzleBoard state, ProblemNode? parent, int pathCost)
+        public SolutionNode(PuzzleBoard state, SolutionNode? parent, int pathCost)
         {
             State = state;
             Parent = parent;
