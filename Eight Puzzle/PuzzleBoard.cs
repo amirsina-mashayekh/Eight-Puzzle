@@ -50,9 +50,9 @@ namespace Eight_Puzzle
             _board = board;
             hash = 0;
 
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 9; i++)
             {
-                hash += _board[i] * (int)Math.Pow(10, 7 - i);
+                hash += _board[i] * (int)Math.Pow(10, 8 - i);
                 if (_board[i] == 0)
                     _emptyTile = i;
             }

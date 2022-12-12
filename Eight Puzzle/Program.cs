@@ -1,13 +1,22 @@
 ﻿using Eight_Puzzle;
 
-var pb = new PuzzleBoard(new int[]
+var goal = new PuzzleBoard(new int[]
     {
-        1, 2, 3,
-        4, 0, 6,
-        5, 7, 8
+        1,2,3,
+        4,5,6,
+        7,8,0,
     });
 
-pb = pb.MoveEmptyUp();
+var pb = new PuzzleBoard(new int[]
+    {
+        3,1,6,
+        2,7,5,
+        4,8,0,
+    });
+
+AStarMisplacedTiles problem = new(pb, goal);
+
+var a = problem.Solve();
 
 Console.WriteLine(pb.ToTableString());
 

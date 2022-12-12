@@ -14,5 +14,10 @@
             Parent = parent;
             PathCost = pathCost;
         }
+
+        public override string ToString()
+        {
+            return State.ToString() + ", " + PathCost.ToString();
+        }
     }
 }

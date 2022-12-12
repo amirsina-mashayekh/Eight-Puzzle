@@ -12,6 +12,6 @@
             this.goalState = goalState;
         }
 
-        public abstract List<SolutionNode> Solve();
+        public abstract (List<SolutionNode> solution, int totalGeneratedNodes) Solve();
     }
 }
