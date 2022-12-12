@@ -10,6 +10,14 @@ namespace Eight_Puzzle
 
         private readonly int _emptyTile;
 
+        private bool CanMoveUp => _emptyTile >= 3;
+
+        private bool CanMoveRight => _emptyTile % 3 != 2;
+
+        private bool CanMoveDown => _emptyTile <= 5;
+
+        private bool CanMoveLeft => _emptyTile % 3 != 0;
+
         public int[] BoardArray => (int[])_board.Clone();
 
         public int[,] Board2d
@@ -87,7 +95,7 @@ namespace Eight_Puzzle
 
         public PuzzleBoard MoveEmptyUp()
         {
-            if (_emptyTile < 3)
+            if (!CanMoveUp)
                 throw new InvalidOperationException("Empty space is in topmost row.");
 
             var brd = BoardArray;
@@ -99,7 +107,7 @@ namespace Eight_Puzzle
 
         public PuzzleBoard MoveEmptyRight()
         {
-            if (_emptyTile % 3 == 2)
+            if (!CanMoveRight)
                 throw new InvalidOperationException("Empty space is in rightmost row.");
 
             var brd = BoardArray;
@@ -111,7 +119,7 @@ namespace Eight_Puzzle
 
         public PuzzleBoard MoveEmptyDown()
         {
-            if (_emptyTile > 5)
+            if (!CanMoveDown)
                 throw new InvalidOperationException("Empty space is in downmost row.");
 
             var brd = BoardArray;
@@ -123,7 +131,7 @@ namespace Eight_Puzzle
 
         public PuzzleBoard MoveEmptyLeft()
         {
-            if (_emptyTile % 3 == 0)
+            if (!CanMoveLeft)
                 throw new InvalidOperationException("Empty space is in leftmost row.");
 
             var brd = BoardArray;
@@ -131,6 +139,22 @@ namespace Eight_Puzzle
             brd[_emptyTile - 1] = 0;
 
             return new PuzzleBoard(brd);
+        }
+
+        public List<PuzzleBoard> PossibleNextStates()
+        {
+            List<PuzzleBoard> boards = new();
+
+            if (CanMoveUp)
+                boards.Add(MoveEmptyUp());
+            if (CanMoveRight)
+                boards.Add(MoveEmptyRight());
+            if (CanMoveDown)
+                boards.Add(MoveEmptyDown());
+            if (CanMoveLeft)
+                boards.Add(MoveEmptyLeft());
+
+            return boards;
         }
     }
 }

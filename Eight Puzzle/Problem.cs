@@ -6,7 +6,7 @@
 
         protected PuzzleBoard goalState;
 
-        public Problem(PuzzleBoard initialState, PuzzleBoard goalState)
+        protected Problem(PuzzleBoard initialState, PuzzleBoard goalState)
         {
             this.initialState = initialState;
             this.goalState = goalState;
