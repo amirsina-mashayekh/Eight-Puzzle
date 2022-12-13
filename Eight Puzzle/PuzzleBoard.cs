@@ -70,7 +70,7 @@ namespace Eight_Puzzle
 
         public override int GetHashCode() => hash;
 
-        public override string ToString() => hash.ToString();
+        public override string ToString() => hash.ToString().PadLeft(9, '0');
 
         public string ToTableString()
         {

@@ -1,6 +1,6 @@
 ﻿using Eight_Puzzle;
 
-var goal = new PuzzleBoard(new int[]
+PuzzleBoard goal = new(new int[]
     {
         1,2,3,
         4,5,6,
@@ -14,10 +14,12 @@ var pb = new PuzzleBoard(new int[]
         2,5,3,
     });
 
-AStarMisplacedTiles problem = new(pb, goal);
+BidirectionalBFS problem = new(pb, goal);
 
 var a = problem.Solve();
 
-Console.WriteLine(pb.ToTableString());
-
-Console.WriteLine(pb.GetHashCode());
+foreach (var item in a.solution)
+{
+    Console.WriteLine(item.ToTableString());
+    Console.WriteLine();
+}

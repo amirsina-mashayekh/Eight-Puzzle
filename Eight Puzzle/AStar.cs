@@ -6,7 +6,7 @@
 
         protected abstract int Heuristic(PuzzleBoard board);
 
-        public override (List<SolutionNode> solution, int totalGeneratedNodes) Solve()
+        public override (List<PuzzleBoard> solution, int totalGeneratedNodes) Solve()
         {
             SolutionNode? currentNode = new(initialState, null, 0);
             PriorityQueue<SolutionNode, int> queue = new();
@@ -29,14 +29,14 @@
                 }
 
                 if (!queue.TryDequeue(out currentNode, out _))
-                    return (new List<SolutionNode>(), 0);
+                    return (new List<PuzzleBoard>(), 0);
             }
 
-            List<SolutionNode> solution = new();
+            List<PuzzleBoard> solution = new();
 
             while (currentNode is not null)
             {
-                solution.Add(currentNode);
+                solution.Add(currentNode.State);
                 currentNode = currentNode.Parent;
             }
             solution.Reverse();
