@@ -118,7 +118,7 @@ while (true)
 
         Console.WriteLine("E: End");
 
-        Console.Write(">>> ");
+        Console.Write(">> ");
         var ans = Console.ReadLine()?.ToUpper();
 
         if (ans == "P" && step > 0)
