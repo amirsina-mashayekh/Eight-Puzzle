@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Eight_Puzzle
+﻿namespace Eight_Puzzle
 {
     internal class BidirectionalBFS : Problem
     {
@@ -66,7 +60,7 @@ namespace Eight_Puzzle
 
             currentNode = visited[commonState.GetHashCode()];
             revCurrentNode = revVisited[commonState.GetHashCode()].Parent;
-            
+
             while (currentNode is not null)
             {
                 solution.Add(currentNode.State);

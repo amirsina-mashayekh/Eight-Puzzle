@@ -82,7 +82,7 @@ namespace Eight_Puzzle
                 for (int j = 0; j < 3; j++)
                 {
                     int tile = table[i, j];
-                    str.Append(tile == 0 ? " " : tile.ToString());
+                    str.Append(tile == 0 ? "█" : tile.ToString());
                     if (j < 2)
                         str.Append(' ');
                 }
